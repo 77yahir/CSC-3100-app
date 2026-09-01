@@ -1,0 +1,15 @@
+{
+  "name": "csc-3100-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npm --prefix packages/react-frontend run dev"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "workspaces": [
+    "packages/*"
+  ]
+}
