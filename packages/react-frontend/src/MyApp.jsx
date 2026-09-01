@@ -18,6 +18,7 @@ function MyApp() {
 
   return (
     <div className="container">
+      <h1>Character List</h1>
       <Table characterData={characters} removeCharacter={removeOneCharacter} />
       <Form handleSubmit={updateList} />
     </div>
