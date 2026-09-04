@@ -5,10 +5,6 @@ const port = 8000;
 
 app.use(express.json());
 
-const findUserByName = (name) => {
-  return users["users_list"].filter((user) => user["name"] === name);
-};
-
 const users = {
   users_list: [
     {
@@ -39,8 +35,23 @@ const users = {
   ],
 };
 
+const findUserByName = (name) => {
+  return users["users_list"].filter((user) => user["name"] === name);
+};
+
+
 const findUserById = (id) => {
-  users["users_list"].find((user) => user["id"] === id);
+  return users["users_list"].find((user) => user["id"] === id);
+}
+
+const findUserIndex = (id) => {
+  return users["users_list"].findIndex((user) => user["id"]=== id)
+}
+
+const findUsersByNameAndJob = (name, job) => {
+  return users.users_list.filter(
+    (user) => user.name === name && user.job === job
+  );
 }
 
 const addUser = (user) => {
@@ -63,11 +74,17 @@ app.get("/users", (req, res) => {
   }
 });
 
-app.post("/users", (req, res) => {
-  const userToAdd = req.body;
-  addUser(userToAdd);
-  res.send();
-});
+app.get("/users/search", (req, res) => {
+  const name = req.query.name;
+  const job = req.query.job;
+  let result = findUsersByNameAndJob(name, job);
+
+  if (result.length == 0) {
+    res.status(404).send("No matching users found");
+  } else {
+    res.status(200).send(result);
+  }
+})
 
 app.get("/users/:id", (req, res) => {
   const id = req.params["id"]; //or req.params.id
@@ -78,6 +95,25 @@ app.get("/users/:id", (req, res) => {
     res.send(result);
   }
 });
+
+
+app.post("/users", (req, res) => {
+  const userToAdd = req.body;
+  addUser(userToAdd);
+  res.send();
+});
+
+app.delete("/users/:id", (req, res) => {
+  const id = req.params["id"];
+  const index = findUserIndex(id);
+
+  if (index == -1) {
+    res.status(404).send("User not found");
+  } else {
+    users.users_list.splice(index, 1)
+    res.status(204).send()
+  }
+})
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
