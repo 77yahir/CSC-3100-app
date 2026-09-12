@@ -15,7 +15,7 @@ function MyApp() {
       .then((res) => {
         if (res.status === 204) {
           const updated = characters.filter((character) => {
-            return String(character.id) !== String(id);
+            return character.id !== id;
           });
 
           setCharacters(updated);
@@ -24,6 +24,7 @@ function MyApp() {
       .catch((error) => {
         console.log(error);
       });
+    return promise;
   }
 
   function updateList(person) {
