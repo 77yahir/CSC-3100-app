@@ -60,6 +60,10 @@ const addUser = (user) => {
   return user;
 };
 
+const idGenerator = () => {
+  return Math.random();
+};
+
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
@@ -102,6 +106,7 @@ app.post("/users", (req, res) => {
   if (!userToAdd | !userToAdd.name | !userToAdd.job) {
     res.status(404).send("Cannot add empty user");
   }
+  userToAdd.id = idGenerator();
   const user = addUser(userToAdd);
   if (user == userToAdd) {
     res.status(201).send();
