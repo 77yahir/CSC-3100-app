@@ -61,7 +61,7 @@ const addUser = (user) => {
 };
 
 const idGenerator = () => {
-  return Math.random();
+  return Math.random().toString(36).substring(2, 15);
 };
 
 app.get("/", (req, res) => {
@@ -103,13 +103,13 @@ app.get("/users/:id", (req, res) => {
 
 app.post("/users", (req, res) => {
   const userToAdd = req.body;
-  if (!userToAdd | !userToAdd.name | !userToAdd.job) {
-    res.status(404).send("Cannot add empty user");
+  if (!userToAdd || !userToAdd.name || !userToAdd.job) {
+    return res.status(404).send("Cannot add empty user");
   }
   userToAdd.id = idGenerator();
   const user = addUser(userToAdd);
   if (user == userToAdd) {
-    res.status(201).send();
+    res.status(201).send(user);
   } else {
     res.status(404).send("Unable to add user");
   }
