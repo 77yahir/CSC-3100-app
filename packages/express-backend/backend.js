@@ -99,8 +99,15 @@ app.get("/users/:id", (req, res) => {
 
 app.post("/users", (req, res) => {
   const userToAdd = req.body;
-  addUser(userToAdd);
-  res.send();
+  if (!userToAdd | !userToAdd.name | !userToAdd.job) {
+    res.status(404).send("Cannot add empty user");
+  }
+  const user = addUser(userToAdd);
+  if (user == userToAdd) {
+    res.status(201).send();
+  } else {
+    res.status(404).send("Unable to add user");
+  }
 });
 
 app.delete("/users/:id", (req, res) => {
